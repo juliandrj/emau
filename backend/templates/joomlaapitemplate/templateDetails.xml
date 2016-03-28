@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3" type="template">
+        <name>Joomla! Api Template</name>
+        <creationDate>01/07/2015</creationDate>
+        <author>Fabio Buda</author>
+        <authorEmail>fabiobuda@netd.it</authorEmail>
+        <authorUrl>http://wiki.netd.it</authorUrl>
+        <copyright>Netdesign 2015</copyright>
+        <license>GNU/GPL</license>
+        <version>1.0.3</version>
+        <description>A Joomla! 3 template to use as a JSON only-reading API</description>
+        <files>
+                <filename>index.php</filename>
+                <filename>templateDetails.xml</filename>
+                <folder>html</folder>
+                <folder>libs</folder>
+        </files>
+        <positions>
+                <position>apilatest</position>
+                <position>apicategories</position>
+                <position>apicustom1</position>
+                <position>apicustom2</position>
+        </positions>
+</extension>
