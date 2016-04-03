@@ -6,12 +6,13 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/animate.min.css">
 <link rel="stylesheet" href="css/jcider.css">
-<link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'> -->
+<!-- <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'> -->
 <link rel="stylesheet" href="css/emau.css">
 <title>cargando...</title>
 <!-- script type="text/javascript" src="js/jquery.js"></script -->
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
 <script type="text/javascript" src="js/jquery.easing.min.js"></script>
@@ -59,7 +60,7 @@
 					// Highlight the top nav as scrolling occurs
 					$('body').scrollspy({
 						target : '.navbar-fixed-top',
-						offset : 51
+						offset : 0
 					})
 					// Closes the Responsive Menu on Menu Item Click
 					$('.navbar-collapse ul li a').click(function() {
@@ -80,7 +81,7 @@
 				$('.slider').jcider({
 					pagination: true,
 					autoplay: true,
-					slideDuration: 5000
+					slideDuration: 7500
 				});
 				$(window).enllax();
 				$('#loading').modal('hide');
@@ -144,19 +145,34 @@
 	</header>
 	<!-- ko if: doc -->
 	<div data-bind="foreach: doc().modulos">
+		<!-- ko if: $data.contenido.contenido.length == 1 -->
+		<div data-bind="foreach: $data.contenido.contenido">
+			<section class="slide" data-enllax-ratio="-0.5" data-bind="attr: {id: $parent.id}, style: {'background-image': 'url(backend/' + imgs.image_intro + ')'}">
+				<div class="lslide">
+					<article class="caja img-rounded">
+						<h3 data-bind="text: titulo"></h3>
+						<div data-bind="html: introtext"></div>
+					</article>
+					<h2 class="slideno" data-bind="text: $parent.titulo"></h2>
+				</div>
+			</section>
+		</div>
+		<!-- /ko -->
+		<!-- ko if: $data.contenido.contenido.length >= 2 -->
 		<section class="slide" data-bind="attr: {id: $data.id}">
 			<div class="slider">
 				<div data-bind="foreach: $data.contenido.contenido">
-					<div data-enllax-ratio="1.5" data-bind="style: {'background-image': 'url(backend/' + imgs.image_intro + ')'}">
+					<div data-enllax-ratio="0.5" data-bind="style: {'background-image': 'url(backend/' + imgs.image_intro + ')'}">
 						<article class="caja img-rounded">
 							<h3 data-bind="text: titulo"></h3>
-							<p data-bind="text: introtext"></p>
+							<div data-bind="html: introtext"></div>
 						</article>
 					</div>
 				</div>
 			</div>
 			<h2 class="slideno" data-bind="text: $data.titulo"></h2>
 		</section>
+		<!-- /ko -->
 	</div>
 	<!-- /ko -->
 </body>

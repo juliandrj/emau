@@ -4,8 +4,8 @@ class JConfig {
 	public $offline_message = 'Este sitio está cerrado por tareas de mantenimiento.<br />Por favor, inténtelo nuevamente más tarde.';
 	public $display_offline_message = '1';
 	public $offline_image = '';
-	public $sitename = 'Proyecto Emau.';
-	public $editor = 'none';
+	public $sitename = 'Proyecto Emau';
+	public $editor = 'tinymce';
 	public $captcha = '0';
 	public $list_limit = '20';
 	public $access = '1';
@@ -44,7 +44,7 @@ class JConfig {
 	public $cache_handler = 'file';
 	public $cachetime = '15';
 	public $cache_platformprefix = '0';
-	public $MetaDesc = 'Espacios confortables rodeados de naturaleza y bienestar.';
+	public $MetaDesc = '¡Espacios confortables rodeados de naturaleza y bienestar!';
 	public $MetaKeys = '';
 	public $MetaTitle = '1';
 	public $MetaAuthor = '1';
