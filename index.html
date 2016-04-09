@@ -4,96 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<link rel="stylesheet" href="css/animate.min.css">
-<link rel="stylesheet" href="css/jcider.css">
-<!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'> -->
-<!-- <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'> -->
 <link rel="stylesheet" href="css/emau.css">
 <title>cargando...</title>
-<!-- script type="text/javascript" src="js/jquery.js"></script -->
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
-<script type="text/javascript" src="js/jquery.easing.min.js"></script>
-<script type="text/javascript" src="js/jquery.enllax.min.js"></script>
-<script type="text/javascript" src="js/jcider.min.js"></script>
-<!-- script type="text/javascript" src="js/jquery.fittext.js"></script -->
-<!-- script type="text/javascript" src="js/wow.min.js"></script -->
-<!-- script type="text/javascript" src="js/waypoint.js"></script -->
-<!-- script type="text/javascript" src="js/jquery.stellar.min.js"></script -->
-<script type="text/javascript">
-	var EmauVM = function() {
-		var self = this;
-		self.doc = ko.observable();
-		self.agregarNumeral = function (valor) {
-			return '#' + valor;
-		};
-	};
-	var emau = new EmauVM();
-	$(document).ready(function() {
-		$('#loading').modal();
-		var hbar = $('#mainNav').height();
-		$(window).resize(function () {
-			var hportada = $('#portada').height();
-			$('.slider').height(hportada);
-			$('.lslide').height(hportada);
-			$(window).enllax();
-		});
-		$.ajax({
-			url : 'backend/',
-			type : 'get',
-			dataType : 'json',
-			success : function(data) {
-				emau.doc(data);
-				document.title = data.titulo;
-				(function($) {
-					"use strict"; // Start of use strict
-					// jQuery for page scrolling feature - requires jQuery Easing plugin
-					$('a.page-scroll').bind('click', function(event) {
-						var $anchor = $(this);
-						$('html, body').stop().animate({
-							scrollTop : ($($anchor.attr('href')).offset().top)
-						}, 1250, 'easeInOutExpo');
-						event.preventDefault();
-					});
-					// Highlight the top nav as scrolling occurs
-					$('body').scrollspy({
-						target : '.navbar-fixed-top',
-						offset : 0
-					})
-					// Closes the Responsive Menu on Menu Item Click
-					$('.navbar-collapse ul li a').click(function() {
-						$('.navbar-toggle:visible').click();
-					});
-					// Offset for Main Navigation
-					$('#mainNav').affix({
-						offset : {
-							top : 100
-						}
-					})
-					// Initialize WOW.js Scrolling Animations
-					//new WOW().init();
-				})(jQuery); // End of use strict
-				var hportada = $('#portada').height();
-				$('.slider').height(hportada);
-				$('.lslide').height(hportada);
-				$('.slider').jcider({
-					pagination: true,
-					autoplay: true,
-					slideDuration: 7500
-				});
-				$(window).enllax();
-				$('#loading').modal('hide');
-			},
-			error : function(jqXHR, textStatus, errorThrown) {
-				console.log(errorThrown);
-				$('#loading').modal('hide');
-			}
-		});
-		ko.applyBindings(emau);
-	});
-</script>
 </head>
 <body id="page-top">
 	<div id="loading" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
@@ -133,7 +45,7 @@
 			</div>
 		</div>
 	</nav>
-	<header id="portada" class="slide" data-enllax-ratio="-0.3">
+	<header id="portada" class="pin-panel">
 		<div class="header-content img-rounded">
 			<div class="header-content-inner">
 				<!-- ko if: doc -->
@@ -144,36 +56,129 @@
 		</div>
 	</header>
 	<!-- ko if: doc -->
-	<div data-bind="foreach: doc().modulos">
-		<!-- ko if: $data.contenido.contenido.length == 1 -->
-		<div data-bind="foreach: $data.contenido.contenido">
-			<section class="slide" data-enllax-ratio="-0.5" data-bind="attr: {id: $parent.id}, style: {'background-image': 'url(backend/' + imgs.image_intro + ')'}">
-				<div class="lslide">
-					<article class="caja img-rounded">
-						<h3 data-bind="text: titulo"></h3>
-						<div data-bind="html: introtext"></div>
-					</article>
-					<h2 class="slideno" data-bind="text: $parent.titulo"></h2>
-				</div>
-			</section>
-		</div>
-		<!-- /ko -->
-		<!-- ko if: $data.contenido.contenido.length >= 2 -->
-		<section class="slide" data-bind="attr: {id: $data.id}">
-			<div class="slider">
-				<div data-bind="foreach: $data.contenido.contenido">
-					<div data-enllax-ratio="0.5" data-bind="style: {'background-image': 'url(backend/' + imgs.image_intro + ')'}">
+		<div id="contenido" class="pin-panel" data-bind="foreach: doc().modulos">
+			<!-- ko if: $data.contenido.contenido.length == 1 -->
+				<!-- ko with: $data.contenido.contenido[0] -->
+					<section class="modulo pantalla singular" data-bind="attr: {id: $parent.id}, style: {'background-image': 'url(backend/' + imgs.image_intro + ')'}">
 						<article class="caja img-rounded">
 							<h3 data-bind="text: titulo"></h3>
 							<div data-bind="html: introtext"></div>
 						</article>
-					</div>
+						<h2 class="slideno" data-bind="text: $parent.titulo"></h2>
+					</section>
+				<!-- /ko -->
+			<!-- /ko -->
+			<!-- ko if: $data.contenido.contenido.length >= 2 -->
+				<div class="modulo" data-bind="attr: {id: $data.id}">
+					<!-- ko foreach: $data.contenido.contenido -->
+						<section class="pantalla plural" data-bind="attr: {id: ($parent.id + '_' + $index())}, style: {'background-image': 'url(backend/' + imgs.image_intro + ')'}">
+							<article class="caja img-rounded">
+								<div class="row">
+									<div class="col-sm-10">
+										<h3 data-bind="text: titulo"></h3>
+									</div>
+									<div class="col-sm-2">
+										<button data-bind="attr: {'data-target': '#' + $parent.id + '_colap_' + $index(), 'aria-controls': $parent.id + '_colap_' + $index()}" class="btn" type="button" data-toggle="collapse" aria-expanded="false">
+											<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+										</button>
+									</div>
+								</div>
+								<div data-bind="attr: {id: $parent.id + '_colap_' + $index()}" class="collapse in">
+									<div data-bind="html: introtext"></div>
+								</div>
+							</article>
+						</section>
+					<!-- /ko -->
+					<h2 class="slideno" data-bind="text: $data.titulo"></h2>
 				</div>
-			</div>
-			<h2 class="slideno" data-bind="text: $data.titulo"></h2>
-		</section>
-		<!-- /ko -->
-	</div>
+			<!-- /ko -->
+		</div>
 	<!-- /ko -->
+	<section>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tempus efficitur volutpat. Aliquam erat volutpat. Donec blandit finibus quam et scelerisque. Nullam tempor urna non eros tempus venenatis. Aliquam erat volutpat. Maecenas a sapien quis turpis convallis porta eu vel urna. Donec feugiat lorem non felis facilisis consequat. Pellentesque non tortor non arcu elementum hendrerit ac at orci. Sed metus ante, fringilla id dictum rhoncus, hendrerit quis tortor. Vestibulum volutpat risus sed tristique elementum. Quisque sit amet quam nibh. Integer venenatis sapien eu orci lacinia tincidunt. Nam elementum bibendum ante, sit amet suscipit ipsum placerat id. Cras suscipit tortor a mauris auctor malesuada.</p>
+	</section>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
+	<script type="text/javascript" src="js/jquery.easing.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/animation.gsap.js"></script>
+	<script type="text/javascript">
+		var EmauVM = function() {
+			var self = this;
+			self.doc = ko.observable();
+		};
+		var emau = new EmauVM();
+		$(document).ready(function() {
+			$('#loading').modal();
+			var hbar = $('#mainNav').height();
+			$.ajax({
+				url : 'backend/',
+				type : 'get',
+				dataType : 'json',
+				success : function(data) {
+					emau.doc(data);
+					document.title = data.titulo;
+					$('a.page-scroll').bind('click', function(event) {
+						var $anchor = $(this);
+						$('html, body').stop().animate({
+							scrollTop : ($($anchor.attr('href')).offset().top)
+						}, 1250, 'easeInOutExpo');
+						event.preventDefault();
+					});
+					$('body').scrollspy({
+						target : '.navbar-fixed-top',
+						offset : 0
+					});
+					$('.navbar-collapse ul li a').click(function() {
+						$('.navbar-toggle:visible').click();
+					});
+					$('#mainNav').affix({
+						offset : {
+							top : 100
+						}
+					});
+					var controller = new ScrollMagic.Controller();
+					var wipeAnimation = new TimelineMax();
+					var i = 1;
+					var first = true;
+					$('.modulo').each(function () {
+						if (!first) {
+							if ($(this).hasClass('pantalla')) {
+								wipeAnimation.fromTo(this, 1, {y: "100%"}, {y: "0%", ease: Linear.easeNone});
+								wipeAnimation.fromTo($('h2.slideno', this), 1, {y: "-1000%"}, {y: "0%", ease: Linear.easeNone}, '-=1');
+							} else {
+								var n = 0;
+								$('section.pantalla', this).each(function () {
+									i *= -1;
+									n++;
+									wipeAnimation.fromTo(this, 1, {x: (i * 100) + "%"}, {x: "0%", ease: Linear.easeNone});
+								});
+								wipeAnimation.fromTo($('h2.slideno', this), n, {y: "-1000%"}, {y: "0%", ease: Linear.easeNone}, '-=' + n);
+							}
+						} else{
+							first = false;
+						}
+					});
+					new ScrollMagic.Scene({
+				         triggerElement: "#contenido",
+				         triggerHook: "onLeave",
+				         duration: "300%"
+				     })
+				     .setPin("#contenido")
+				     .setTween(wipeAnimation)
+				     .addTo(controller);
+					$('#loading').modal('hide');
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					console.log(errorThrown);
+					$('#loading').modal('hide');
+				}
+			});
+			ko.applyBindings(emau);
+		});
+	</script>
 </body>
 </html>
