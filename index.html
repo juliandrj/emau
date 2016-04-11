@@ -72,21 +72,13 @@
 				<div class="modulo" data-bind="attr: {id: $data.id}">
 					<!-- ko foreach: $data.contenido.contenido -->
 						<section class="pantalla plural" data-bind="attr: {id: ($parent.id + '_' + $index())}, style: {'background-image': 'url(backend/' + imgs.image_intro + ')'}">
-							<article class="caja img-rounded">
-								<div class="row">
-									<div class="col-sm-10">
-										<h3 data-bind="text: titulo"></h3>
-									</div>
-									<div class="col-sm-2">
-										<button data-bind="attr: {'data-target': '#' + $parent.id + '_colap_' + $index(), 'aria-controls': $parent.id + '_colap_' + $index()}" class="btn" type="button" data-toggle="collapse" aria-expanded="false">
-											<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-										</button>
-									</div>
-								</div>
-								<div data-bind="attr: {id: $parent.id + '_colap_' + $index()}" class="collapse in">
-									<div data-bind="html: introtext"></div>
-								</div>
-							</article>
+							<button type="button" class="pieimg btn btn-lg" data-html="true" data-toggle="popover" data-bind="attr: {'data-popover-content': '#' + $parent.id + '_' + $index() + '_pop'}">
+								<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+							</button>
+							<div class="hidden" data-bind="attr: {id: ($parent.id + '_' + $index() + '_pop')}">
+								<div class="popover-heading" data-bind="text: $data.titulo"></div>
+								<div class="popover-body" data-bind="html: $data.introtext"></div>
+							</div>
 						</section>
 					<!-- /ko -->
 					<h2 class="slideno" data-bind="text: $data.titulo"></h2>
@@ -94,40 +86,44 @@
 			<!-- /ko -->
 		</div>
 	<!-- /ko -->
-	<section>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tempus efficitur volutpat. Aliquam erat volutpat. Donec blandit finibus quam et scelerisque. Nullam tempor urna non eros tempus venenatis. Aliquam erat volutpat. Maecenas a sapien quis turpis convallis porta eu vel urna. Donec feugiat lorem non felis facilisis consequat. Pellentesque non tortor non arcu elementum hendrerit ac at orci. Sed metus ante, fringilla id dictum rhoncus, hendrerit quis tortor. Vestibulum volutpat risus sed tristique elementum. Quisque sit amet quam nibh. Integer venenatis sapien eu orci lacinia tincidunt. Nam elementum bibendum ante, sit amet suscipit ipsum placerat id. Cras suscipit tortor a mauris auctor malesuada.</p>
-	</section>
+		<section id="mapa" class="pin-panel mapa">Mapa</section>
+	<!-- ko if: doc -->
+		<footer data-bind="html: doc().pie"></footer>
+	<!-- /ko -->
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
-	<script type="text/javascript" src="js/jquery.easing.min.js"></script>
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script>
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/animation.gsap.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhl4ua0d4TNRgeTEYbToAnE_JHWoIm6xc&signed_in=true&callback=initMap"></script>
 	<script type="text/javascript">
 		var EmauVM = function() {
 			var self = this;
 			self.doc = ko.observable();
 		};
 		var emau = new EmauVM();
+		var pos = undefined;
+		var map = undefined;
+		function initMap () {
+			map = new google.maps.Map(document.getElementById('mapa'), {
+				zoom: 4,
+				center: {lat: 4.6482837, lng: -74.2478957},
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			});
+		}
 		$(document).ready(function() {
 			$('#loading').modal();
 			var hbar = $('#mainNav').height();
 			$.ajax({
-				url : 'backend/',
+				url : 'backend/?template=proyectoemau',
 				type : 'get',
 				dataType : 'json',
 				success : function(data) {
 					emau.doc(data);
 					document.title = data.titulo;
-					$('a.page-scroll').bind('click', function(event) {
-						var $anchor = $(this);
-						$('html, body').stop().animate({
-							scrollTop : ($($anchor.attr('href')).offset().top)
-						}, 1250, 'easeInOutExpo');
-						event.preventDefault();
-					});
 					$('body').scrollspy({
 						target : '.navbar-fixed-top',
 						offset : 0
@@ -147,18 +143,19 @@
 					$('.modulo').each(function () {
 						if (!first) {
 							if ($(this).hasClass('pantalla')) {
-								wipeAnimation.fromTo(this, 1, {y: "100%"}, {y: "0%", ease: Linear.easeNone});
-								wipeAnimation.fromTo($('h2.slideno', this), 1, {y: "-1000%"}, {y: "0%", ease: Linear.easeNone}, '-=1');
+								wipeAnimation.fromTo(this, 1, {y: "100%"}, {y: "0%", ease: Linear.easeNone}, '+=1');
+								wipeAnimation.fromTo($('h2.slideno', this), 1, {y: "-800%"}, {y: "0%", ease: Linear.easeNone}, '-=1');
 							} else {
 								var n = 0;
 								$('section.pantalla', this).each(function () {
 									i *= -1;
 									n++;
-									wipeAnimation.fromTo(this, 1, {x: (i * 100) + "%"}, {x: "0%", ease: Linear.easeNone});
+									wipeAnimation.fromTo(this, 1, {x: (i * 100) + "%"}, {x: "0%", ease: Linear.easeNone}, '+=1');
 								});
-								wipeAnimation.fromTo($('h2.slideno', this), n, {y: "-1000%"}, {y: "0%", ease: Linear.easeNone}, '-=' + n);
+								wipeAnimation.fromTo($('h2.slideno', this), n * 2, {css: {top: '-20vh'}}, {css: {top: '80vh'}, ease: Linear.easeNone}, '-=' + (n * 2 - 1));
 							}
-						} else{
+						} else {
+							wipeAnimation.fromTo($('h2.slideno', this), 1, {css: {top: '0vh'}}, {css: {top: '80vh'}, ease: Linear.easeNone});
 							first = false;
 						}
 					});
@@ -170,6 +167,47 @@
 				     .setPin("#contenido")
 				     .setTween(wipeAnimation)
 				     .addTo(controller);
+					controller.scrollTo(function (newpos) {
+						TweenMax.to(window, 0.5, {scrollTo: {y: newpos}});
+					});
+					$('a.page-scroll').click(function (e) {
+						var id = $(this).attr("href");
+						if ($(id).length > 0) {
+							e.preventDefault();
+							controller.scrollTo(id);
+							if (window.history && window.history.pushState) {
+								history.pushState("", document.title, id);
+							}
+						}
+					});
+					if (!_.isUndefined(emau.doc().mapa)) {
+						try {
+							pos = emau.doc().mapa.params.address;
+							var latlon = pos.split(',');
+							if (latlon.length == 2) {
+								pos = {lat: parseFloat(latlon[0]), lng: parseFloat(latlon[1])};
+							}
+							var marker = new google.maps.Marker({
+								position: pos,
+								map: map,
+								title: emau.doc().mapa.params.title
+							});
+						} catch (ex) {
+							console.log(ex.message);
+						}
+					}
+					$("[data-toggle=popover]").popover({
+						html : true,
+						placement: 'left',
+						content: function() {
+							var content = $(this).attr("data-popover-content");
+							return $(content).children(".popover-body").html();
+						},
+						title: function() {
+							var title = $(this).attr("data-popover-content");
+							return $(title).children(".popover-heading").html();
+						}
+				    });
 					$('#loading').modal('hide');
 				},
 				error : function(jqXHR, textStatus, errorThrown) {

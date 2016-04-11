@@ -181,7 +181,7 @@ header .header-content .header-content-inner p {
 
 .slideno {
 	position: absolute;
-	bottom: 0px;
+	top: -20%;
 	left: 0px;
 	font-size: 100px;
 	font-weight: bold;
@@ -189,23 +189,44 @@ header .header-content .header-content-inner p {
 }
 
 section article.caja {
-	width: 70%;
+	width: 90%;
+	height: 90%;
 	padding: 1.5em;
 	position: relative;
-	top: 15%;
-	right: -15%;
+	top: 5%;
+	left: 5%;
 	color: white;
 	background-color: rgba(57, 35, 8, 0.7);
 }
 @media (min-width: 768px) {
 	section article.caja {
-		width: 45%;
-		right: -50%;
+		width: 80%;
+		height: 60%;
+		top: 20%;
+		left: 10%;
 	}
 }
-
-.caja button {
-	background: none;
+section button.pieimg {
+	position: relative;
+	bottom: -90%;
+	right: -90%;
+	color: #ffffff;
+	font-size: 2em;
+	font-weight: bold;
+	background-color: rgba(57, 35, 8, 0.7);
 	border: none;
 	box-shadow: none;
+}
+section button.pieimg:hover {
+	color: #ffffff;
+}
+section button.pieimg:focus {
+	color: #ffffff;
+}
+.mapa {
+	height: 50vh !important;
+}
+footer {
+	padding: 4em;
+	background: #F0A749;
 }

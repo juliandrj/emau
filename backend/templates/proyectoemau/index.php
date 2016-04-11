@@ -9,7 +9,7 @@ $json = new stdClass();
 $json->titulo = $app->get('sitename');
 $json->descripcion = $app->get('MetaDesc');
 $modulos = array();
-$mods = JModuleHelper::getModules('position-2');
+$mods = JModuleHelper::getModules('contenido');
 $attribs['style'] = 'json';
 foreach ($mods as $mod) {
 	$m = new stdClass();
@@ -20,4 +20,17 @@ foreach ($mods as $mod) {
 	$modulos[] = $m;
 }
 $json->modulos = $modulos;
+$mods = JModuleHelper::getModules('mapas');
+$mapas = array();
+if (count($mods) > 0) {
+	$m = new stdClass();
+	$m->id = 'map_' . $mods[0]->id;
+	$m->titulo = $mods[0]->title;
+	$m->params = json_decode($mods[0]->params);
+	$json->mapa = $m;
+}
+$mods = JModuleHelper::getModules('footer');
+if (count($mods) > 0) {
+	$json->pie = $mods[0]->content;
+}
 echo json_encode($json);

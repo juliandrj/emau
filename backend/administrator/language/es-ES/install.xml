@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension version="3.5" client="administrator" type="language" method="upgrade">
-	<name>joomla_3.5.0</name>
+	<name>joomla_3.5.1</name>
 	<tag>es-ES</tag>
-	<version>3.5.0.1</version>
-	<creationDate>22/03/2016</creationDate>
+	<version>3.5.1.1</version>
+	<creationDate>06/04/2016</creationDate>
 	<author>ComunidadJoomla</author>
 	<authorEmail>jcomunidad@gmail.com</authorEmail>
 	<authorUrl>http://comunidadjoomla.org</authorUrl>
 	<copyright>Copyright (C) 2005 - 2016 comunididadjomla.org. All rights reserved.r; see LICENSE.txt</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<description>es-ES Admin language</description>
+	<description>es-ES - Administration language</description>
 	<files>
 		<filename>es-ES.ini</filename>
 		<filename>es-ES.com_admin.ini</filename>
