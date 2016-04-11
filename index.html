@@ -86,7 +86,7 @@
 			<!-- /ko -->
 		</div>
 	<!-- /ko -->
-		<section id="mapa" class="pin-panel mapa">Mapa</section>
+		<section id="mapa" class="pin-panel mapa"></section>
 	<!-- ko if: doc -->
 		<footer data-bind="html: doc().pie"></footer>
 	<!-- /ko -->
@@ -98,22 +98,11 @@
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/ScrollMagic.min.js"></script>
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.5/plugins/animation.gsap.js"></script>
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
-	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhl4ua0d4TNRgeTEYbToAnE_JHWoIm6xc&signed_in=true&callback=initMap"></script>
 	<script type="text/javascript">
 		var EmauVM = function() {
 			var self = this;
 			self.doc = ko.observable();
 		};
-		var emau = new EmauVM();
-		var pos = undefined;
-		var map = undefined;
-		function initMap () {
-			map = new google.maps.Map(document.getElementById('mapa'), {
-				zoom: 4,
-				center: {lat: 4.6482837, lng: -74.2478957},
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-			});
-		}
 		$(document).ready(function() {
 			$('#loading').modal();
 			var hbar = $('#mainNav').height();
@@ -180,22 +169,6 @@
 							}
 						}
 					});
-					if (!_.isUndefined(emau.doc().mapa)) {
-						try {
-							pos = emau.doc().mapa.params.address;
-							var latlon = pos.split(',');
-							if (latlon.length == 2) {
-								pos = {lat: parseFloat(latlon[0]), lng: parseFloat(latlon[1])};
-							}
-							var marker = new google.maps.Marker({
-								position: pos,
-								map: map,
-								title: emau.doc().mapa.params.title
-							});
-						} catch (ex) {
-							console.log(ex.message);
-						}
-					}
 					$("[data-toggle=popover]").popover({
 						html : true,
 						placement: 'left',

@@ -20,15 +20,6 @@ foreach ($mods as $mod) {
 	$modulos[] = $m;
 }
 $json->modulos = $modulos;
-$mods = JModuleHelper::getModules('mapas');
-$mapas = array();
-if (count($mods) > 0) {
-	$m = new stdClass();
-	$m->id = 'map_' . $mods[0]->id;
-	$m->titulo = $mods[0]->title;
-	$m->params = json_decode($mods[0]->params);
-	$json->mapa = $m;
-}
 $mods = JModuleHelper::getModules('footer');
 if (count($mods) > 0) {
 	$json->pie = $mods[0]->content;
