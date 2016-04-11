@@ -225,6 +225,10 @@ section button.pieimg:focus {
 }
 .mapa {
 	height: 50vh !important;
+	background-image: url('../backend/images/mapa.jpg');
+	background-size: cover;
+	background-position: center;
+	box-shadow: inset 0px 10px 10px rgba(0, 0, 0, 0.3);
 }
 footer {
 	padding: 4em;
